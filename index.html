@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+	  body {
+		font-family: Arial, sans-serif;
+		padding: 20px;
+		background: #f9f9f9;
+		color: #333;
+	  }
+
+	  h1 {
+		text-align: center;
+	  }
+
+	  form, #playerList, #teamResult, #clearPlayers, #makeTeams {
+		max-width: 500px;
+		margin: 10px auto;
+		display: block;
+	  }
+
+	  input, button {
+		padding: 10px;
+		margin: 5px 5px 5px 0;
+		border: 1px solid #ccc;
+		border-radius: 6px;
+	  }
+
+	  button {
+		background-color: #007BFF;
+		color: white;
+		border: none;
+		cursor: pointer;
+	  }
+
+	  button:hover {
+		background-color: #0056b3;
+	  }
+
+	  #playerList li {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background: white;
+		padding: 8px 12px;
+		margin: 5px 0;
+		border-radius: 6px;
+		border: 1px solid #ddd;
+	  }
+
+	  #playerList li > div {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		width: 100%;
+	  }
+
+	  #teamResult {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 20px;
+		gap: 20px;
+		flex-wrap: wrap;
+	  }
+
+	  #teamResult > div {
+		background: white;
+		padding: 15px;
+		border-radius: 8px;
+		width: 230px;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	  }
+
+	  #teamResult h3 {
+		margin-top: 0;
+		text-align: center;
+	  }
+
+	  /* Dark mode */
+	  body.dark {
+		background-color: #121212;
+		color: #eee;
+		/*transition: background-color 0.3s ease, color 0.3s ease;*/
+	  }
+
+	  body.dark input,
+	  body.dark button,
+	  body.dark #playerList li,
+	  body.dark #teamResult > div {
+		background-color: #1e1e1e;
+		color: #eee;
+		border-color: #444;
+	  }
+
+	  body.dark button {
+		background-color: #444;
+	  }
+
+	  body.dark button:hover {
+		background-color: #666;
+	  }
+
+	  #playerList li input[type="text"],
+	  #playerList li input[type="number"],
+	  #playerList li input[type="checkbox"] {
+		margin-right: 10px;
+		text-align: center;
+	  }
+
+	  /* Make both display and edit containers look identical */
+	  #playerList li > div {
+		padding: 8px 12px;
+		background: #eee;
+		border-radius: 6px;
+	  }
+
+	  body.dark #playerList li > div {
+		background: #222;
+	  }
+
+	  #playerList li button {
+		cursor: pointer;
+		padding: 6px 10px;
+		border: none;
+		background-color: #444;
+		color: white;
+		border-radius: 4px;
+	  }
+
+	  #playerList li button:hover {
+		background-color: #666;
+	  }
+
+	  #playerList li button:last-child {
+		background-color: transparent;
+	  }
+
+	  #playerList li button:last-child:hover {
+		background-color: #d04343;
+	  }
+	  
+	/* Make display spans look like inputs */
+	.player-info {
+	  padding: 6px 10px;
+	  background-color: #f0f0f0;
+	  border: 1px solid #ccc;
+	  border-radius: 6px;
+	  min-width: 80px;
+	  text-align: center;
+	}
+
+	body.dark .player-info {
+	  background-color: #333;
+	  border-color: #555;
+	  color: #eee;
+	}
+	
+	.matchTypeBtn.selected {
+	  background-color: #0056b3 !important;
+	  color: white;
+	}
+	</style>
+	
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Football Team Balancer</title>
+</head>
+<body>
+  <h1>Football Team Balancer</h1>
+	<div style="text-align: center; margin: 20px 0;">
+	  <button id="toggleDarkMode">Toggle Dark/Light Mode</button>
+	</div>
+  <form id="playerForm">
+    <input type="text" id="playerName" placeholder="Player Name" required />
+	<input type="number" id="playerRating" min="1" max="10" step="0.5" placeholder="Rating (1-10)" required style="width: 100px;" />
+	<label>
+		<input type="checkbox" id="playerAvailable" checked />
+		Available
+	</label>
+    <button type="submit">Add Player</button>
+  </form>
+  
+	<div style="text-align: center; margin-bottom: 10px;">
+	  <label for="filterSelect">Show:</label>
+	  <select id="filterSelect">
+		<option value="all">All Players</option>
+		<option value="available">Available Only</option>
+	  </select>
+	    <span style="margin-left: 20px;">
+			Total players: <span id="totalCount">0</span> |
+			Available players: <span id="availableCount">0</span>
+		</span>
+	</div>  
+  
+  <ul id="playerList"></ul>
+	<button id="clearPlayers">Clear All Players</button>
+	<h1>Type of match</h1><div id="matchType"></div>
+		<div id="matchTypeSelector" style="text-align: center; margin-bottom: 15px;">
+		  <button class="matchTypeBtn selected" data-mode="5v5">5 vs 5</button>
+		  <button class="matchTypeBtn" data-mode="6v6">6 vs 6</button>
+		  <button class="matchTypeBtn" data-mode="5v5v5">5 vs 5 vs 5</button>
+		</div>
+	<h1>Team Result</h1><div id="teamResult"></div>
+	<button id="makeTeams">Generate Balanced Teams</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
